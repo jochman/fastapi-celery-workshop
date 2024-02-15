@@ -12,13 +12,15 @@ app = FastAPI()
 
 @app.post("/add")
 async def get_number(x: float, y: float):
-    task = celery.send_task("tasks.add", kwargs={"x": x, "y": y})
-    return task.id
+    task = celery.send_task("add", kwargs={"x": x, "y": y})
+    return {"task-id": task.id}
 
 
-@app.get("result/{task_id}")
+@app.get("/result/{task_id}")
 async def get_results(task_id: str):
     result = celery.AsyncResult(task_id)
+    resp = {"task-id": task_id, "state": result.state}
     if result.state == "SUCCESS":
-        return result.get()
-    return {"id": task_id, "state": result.state}
+        resp["result"] = result.get()
+        return resp
+    return resp
