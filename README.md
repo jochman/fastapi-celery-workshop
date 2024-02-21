@@ -6,6 +6,15 @@ To run this project, you need docker.
 docker compose up
 ```
 
+## Challenge
+
+Theres a function called `calculate_pi` in `worker/pi_calc.py`.
+
+1. Create a task in worker/app.py to run that function
+1. Add an endpoint in api/app.py to access this function
+
+results can be found in the branch `calculate-pi`
+
 ## Local Development
 
 For local development, there are running scripts in root dir, worker and api.
