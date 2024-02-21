@@ -16,6 +16,12 @@ async def get_number(x: float, y: float):
     return {"task-id": task.id}
 
 
+@app.get("/pi/{precision}")
+async def calculate_pi(precision: int):
+    task = celery.send_task("calculate_pi", args=(precision,))
+    return {"task-id": task.id}
+
+
 @app.get("/result/{task_id}")
 async def get_results(task_id: str):
     result = celery.AsyncResult(task_id)
